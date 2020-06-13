@@ -1,0 +1,50 @@
+<title> WWED </title>
+
+<div id="board">
+
+  <div id="user_table_box">
+
+    <div id="next_button"> <div id="next_text"> Start! </div> </div>
+    
+    Current Ethan:  
+    <select id="ethan_select">
+    </select>
+
+    <div id="user_table">
+    </div>
+  </div>
+  
+  <div id="round">
+
+    <div id="prompt">
+       <div id="prompt_inner"> (Example) What's your ideal first date? </div> 
+     </div>
+    
+    <div id="paradigm"> 
+      <div id="paradigm_inner"> (Example) What would Ethan say? </div> 
+    </div>
+
+    <div id="answer_box" style="visibility:hidden"> Type your answer in here. </div>
+
+    <div id="answer_table">
+      <div class="answer"> Coffee date! </div>
+      <div class="answer"> Dinner and a movie </div>
+      <div class="answer"> Netflix and chill... duh </div> 
+    </div>
+    
+    <div id="finals">
+       <div id="final_winner"> Winner: Coffee date! </div>
+       <div id="final_ethan"> Ethan said: Netflix and chill... duh </div>
+     </div>
+  </div>
+  
+</div>
+
+<link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+<script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+<script> 
+var main = SocketApp.run()[0]
+var start = SocketApp.run()[1]
+var ethan = SocketApp.run()[2]
+main()
+</script>

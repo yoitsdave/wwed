@@ -1,0 +1,119 @@
+/* This file is for your main application css. */
+@import "./phoenix.css";
+
+/* Alerts and form errors */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+}
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+.alert p {
+  margin-bottom: 0;
+}
+.alert:empty {
+  display: none;
+}
+
+table, th, td {
+  border: 0px solid black;
+}
+
+#board {
+  height: 95vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#round {
+  display: flex;
+  flex-basis: 90%;
+  height: 85%;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#prompt {
+  flex-basis: 20%;
+}
+
+#paradigm {
+  flex-basis: 10%;
+}
+
+#answer_box {
+  flex-bases: 10%;
+}
+
+#answer_table {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-basis: 40%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.answer {
+  text-align: center; 
+  flex-basis: 20%;
+  border: solid black 1px;
+  border-radius: 10px;
+}
+
+#finals {
+  flex-basis: 20%;
+}
+
+#user_table_box{
+  flex-basis: 20%;
+  height: 85%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#next_button {
+  text-align: center;
+  height: 10%;
+  width: 20%;
+  background-color: #00FF00;
+  border-radius: 10px;
+}
+
+.score-row {
+  display: flex;
+  flex-basis: 100%;
+  min-width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.user {
+  flex-basis: 80%;
+}
+
+.score {
+  flex-basis: 20%;
+}

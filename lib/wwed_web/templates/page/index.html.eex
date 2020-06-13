@@ -1,0 +1,18 @@
+Welcome to What Would Ethan Do!
+
+<br><hr><br>
+
+<h3>To create a new board in progress, enter it here:</h3> 
+<div class="byline"> (If you know the exact name and password of the room you'd like to join, you can enter that here as well) </div>
+<br>
+<%= text_input(:room, "name", class: "text-in", value: "", placeholder: "Room Name", id: "name") %>
+<%= text_input(:room, "pwd", class: "text-in", value: "", placeholder: "Password", id: "pwd") %>
+
+<%= form_for @conn, "/room/empty", [multipart: true, id: "submit"], fn _f -> %>
+  <%= submit("Go", class: "submit-btn", id: "submit-btn") %>
+<% end %>
+
+<br><br><hr><br>
+
+<script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+<script> IndexApp.run() </script>
