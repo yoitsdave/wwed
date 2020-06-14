@@ -74,7 +74,7 @@ export var SocketApp = {
     
     function handlePromptReply(reply) {
       if ("error" in reply){
-        alert("That was an invalid prompt! Keep it emoji-free and shorter than a tweet please. \n Error: " + reply['error'])
+        alert("That was an invalid prompt! Keep it emoji-free. \n Error: " + reply['error'])
       } else {
         document.getElementById("prompt_input").style.visibility = "hidden"
         document.getElementById("prompt_input").value = ""
@@ -125,7 +125,7 @@ export var SocketApp = {
     
     function handleResponseReply(reply) {
       if ("error" in reply){
-        alert("That was an invalid answer! Keep it emoji-free and shorter than 64 characters. \n Error: " + reply['error'])
+        alert("That was an invalid answer! Keep it emoji-free. \n Error: " + reply['error'])
       } else {
         let input = document.getElementById("answer_input")
         let inner = document.getElementById("answer_inner")
