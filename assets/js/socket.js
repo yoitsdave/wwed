@@ -24,12 +24,10 @@ export var SocketApp = {
             alert("Unknown error. I did a fucky wucky :()")
         }
       } else {
-        console.log("Round succesfully started")
       }
     }
     
     function startRound() {
-      console.log("attempting to start round")
       window.channel.push("ser_start", prompt)
         .receive("ok", handleStartReply)
     }
@@ -75,7 +73,6 @@ export var SocketApp = {
     }
     
     function handlePromptReply(reply) {
-      console.log(reply)
       if ("error" in reply){
         alert("That was an invalid prompt! Keep it emoji-free and shorter than a tweet please. \n Error: " + reply['error'])
       } else {
@@ -94,7 +91,6 @@ export var SocketApp = {
 
       let inner = document.getElementById("prompt_inner")
       
-      console.log("Setter", data['payload'])
       if (data['payload'] == window.uname) {
         let text = document.createTextNode("Type prompt here, and press next when ready")
         inner.removeChild(inner.childNodes[0])
@@ -129,7 +125,6 @@ export var SocketApp = {
     }
     
     function handleResponseReply(reply) {
-      console.log(reply)
       if ("error" in reply){
         alert("That was an invalid answer! Keep it emoji-free and shorter than 64 characters. \n Error: " + reply['error'])
       } else {
@@ -149,12 +144,9 @@ export var SocketApp = {
       )
     }
     
-    //TODO: If you empty the box and click off of it, it should repopulate
     function takePrompt(data) {
       window.state = "awaitng_responses"
-      
-      console.log("Prompt: ", data['payload'])
-      
+            
       document.getElementById("paradigm").style.visibility = "visible"; 
       
       let prompt = document.getElementById("prompt_inner")
@@ -178,7 +170,6 @@ export var SocketApp = {
     
     function getVoteReplyFunction(response) {
       function internal (reply) {
-        console.log(reply)
         if ("error" in reply){
           alert("That was an invalid vote! If you tried to vote for yourself, you're a nasty one... \n Error: " + reply['error'])
         } else {
@@ -207,11 +198,10 @@ export var SocketApp = {
     function takeResponses(data) {
       window.state = "awaitng_votes"
       
-      console.log("Responses: ", data['payload'])
-
       var answer_table_old = document.getElementById("answer_table")
       var answer_table_new = answer_table_old.cloneNode(false)
       var div, text, response
+      window.answer_boxes = []
 
       for (const idx in data['payload']) {
         response = data['payload'][idx]
@@ -224,6 +214,7 @@ export var SocketApp = {
         div.id = "answer_box_" + response
         
         div.onclick = getVoteFunction(response)
+        window.answer_boxes.push(div)
         
         answer_table_new.appendChild(div)
       }
@@ -244,7 +235,12 @@ export var SocketApp = {
     function takeVotes(data) {
       window.state = "awaiting_start"
       
-      console.log("Votes:", data['payload'])
+      for (const answer_div in window.answer_boxes) {
+        window.answer_boxes[answer_div].onclick = (
+          () => alert("It's too late to vote...")
+        )
+      }
+      
       let votes = data['payload'][0]
       let ethans = data['payload'][1]
       
@@ -258,12 +254,11 @@ export var SocketApp = {
                        acc),
         0
       )
-      console.log("Max votes", max_votes)
+      
       let winners = votes.filter(
         (vote) => votes.filter((elem) => elem == vote).length == max_votes
       ).map((winner) => "Winner: " + winner)
       winners = [...new Set(winners)]
-      console.log(winners)
       
       let old_votes_node = document.getElementById("final_winner")
       let new_votes_node = old_votes_node.cloneNode(false)
@@ -286,7 +281,6 @@ export var SocketApp = {
     }
         
     function takeUsers(data) {
-      console.log("Users:", data['payload'])
       var user_table_old = document.getElementById("user_table")
       var user_table_new = user_table_old.cloneNode(false)
       var option_table_old = document.getElementById("ethan_select")
@@ -333,7 +327,6 @@ export var SocketApp = {
       user_table_old.parentNode.replaceChild(user_table_new, user_table_old)
       option_table_old.parentNode.replaceChild(option_table_new, option_table_old)
       
-      console.log("took users, num", Object.keys(data['payload']).length, "state", window.state)
       if (Object.keys(data['payload']).length < 3 && window.state != "awaiting_start") {
         alert("Someone disconnected, bringing the number of players down to 2 and cutting off the round.");
         window.state = "awaiting_start";
@@ -352,14 +345,12 @@ export var SocketApp = {
     }
     
     function takeParadigm(data) {
-      console.log("Paradigm:", data['payload'])
       let paradigm = document.getElementById("paradigm_inner")
       paradigm.removeChild(paradigm.childNodes[0])
       paradigm.appendChild(document.createTextNode(data['payload']))
     }
     
     function takeEthan(data) {
-      console.log("New ethan:", data['payload'])
       document.getElementById("ethan_select").value = data['payload']
       window.cur_ethan = data['payload']
     }
@@ -415,7 +406,6 @@ export var SocketApp = {
       document.getElementById("prompt_inner").onblur = (
         function () {
           let prompt = document.getElementById("prompt_inner")
-          console.log("hey bitch", prompt.textContent)
           if (prompt.textContent == "") {
             prompt.removeChild(prompt.childNodes[0])
             prompt.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))

@@ -21,5 +21,5 @@
                         'Elixir.WwedWeb.Telemetry',
                         'Elixir.WwedWeb.UserSocket']},
               {registered,[]},
-              {vsn,"0.1.1"},
+              {vsn,"1.0.0"},
               {mod,{'Elixir.Wwed.Application',[]}}]}.
