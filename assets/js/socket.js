@@ -24,6 +24,7 @@ export var SocketApp = {
             alert("Unknown error. I did a fucky wucky :()")
         }
       } else {
+        document.getElementById("ethan_select").disabled = true
       }
     }
     
@@ -76,42 +77,39 @@ export var SocketApp = {
       if ("error" in reply){
         alert("That was an invalid prompt! Keep it emoji-free and shorter than a tweet please. \n Error: " + reply['error'])
       } else {
-        let inner = document.getElementById("prompt_inner")
-        inner.contentEditable = false
-        inner.style.fontStyle = "normal"
+        document.getElementById("prompt_input").style.visibility = "hidden"
+        document.getElementById("prompt_input").value = ""
+        document.getElementById("prompt_inner").style.visibility = "visible";
       }
     }
     
     function takeSetter(data) {
       window.state = "awaitng_prompt"
 
-      document.getElementById("paradigm").style.visibility = "hidden"; 
-      document.getElementById("answer_table").style.visibility = "hidden"; 
-      document.getElementById("finals").style.visibility = "hidden"; 
+      document.getElementById("paradigm").style.visibility = "hidden"
+      document.getElementById("answer_inner").style.visibility = "hidden"
+      document.getElementById("answer_table").style.visibility = "hidden" 
+      document.getElementById("finals").style.visibility = "hidden"
 
       let inner = document.getElementById("prompt_inner")
-      
+      let input = document.getElementById("prompt_input")
+
       if (data['payload'] == window.uname) {
-        let text = document.createTextNode("Type prompt here, and press next when ready")
-        inner.removeChild(inner.childNodes[0])
-        inner.appendChild(text)
-        inner.contentEditable = true
-        inner.style.fontStyle = "italic"
-        
+        input.style.visibility = "visible"  
+        inner.style.visibility = "hidden"; 
+
         let button = document.getElementById("next_text")
         button.removeChild(button.childNodes[0])
         button.appendChild(document.createTextNode("Next"))
         
         document.getElementById("next_button").style.backgroundColor = "orange"
         document.getElementById("next_button").onclick = (
-          () => window.channel.push("ser_prompt", document.getElementById("prompt_inner").textContent)
+          () => window.channel.push("ser_prompt", document.getElementById("prompt_input").value)
                   .receive("ok", handlePromptReply)
         )
         
       } else {
-        let text = document.createTextNode("Waiting for " + data['payload'] + " to set prompt.")
-        inner.removeChild(inner.childNodes[0])
-        inner.appendChild(text)
+        inner.textContent = "Waiting for " + data['payload'] + " to set prompt."
         
         let button = document.getElementById("next_text")
         button.removeChild(button.childNodes[0])
@@ -128,38 +126,37 @@ export var SocketApp = {
       if ("error" in reply){
         alert("That was an invalid answer! Keep it emoji-free and shorter than 64 characters. \n Error: " + reply['error'])
       } else {
-        let answer = document.getElementById("answer_box")
-        answer.contentEditable = false
-        answer.style.fontStyle = "normal"
+        let input = document.getElementById("answer_input")
+        let inner = document.getElementById("answer_inner")
+        inner.textContent = input.value
+        input.value = ""
+        input.style.visibility = "hidden"
+        inner.style.visibility = "visible"
+        
+        document.getElementById("next_button").style.backgroundColor = "red"        
+        document.getElementById("next_button").onclick = (
+          () => alert("Wait for everyone else to submit answers!")
+        )
       }
     }
     
     function sendResponse() {
-      window.channel.push("ser_response", document.getElementById("answer_box").textContent)
+      window.channel.push("ser_response", document.getElementById("answer_input").value)
               .receive("ok", handleResponseReply)
-      
-      document.getElementById("next_button").style.backgroundColor = "red"        
-      document.getElementById("next_button").onclick = (
-        () => alert("Wait for everyone else to submit answers!")
-      )
-    }
+          }
     
     function takePrompt(data) {
       window.state = "awaitng_responses"
             
       document.getElementById("paradigm").style.visibility = "visible"; 
       
-      let prompt = document.getElementById("prompt_inner")
-      prompt.removeChild(prompt.childNodes[0])
-      prompt.appendChild(document.createTextNode(data['payload']))
-      
-      let answer = document.getElementById("answer_box")
-      answer.style.visibility = "visible";
-      answer.removeChild(answer.childNodes[0])
-      answer.appendChild(document.createTextNode("Type your answer in here. Press next when ready"))
-      answer.contentEditable = true
-      answer.style.fontStyle = "italic"
-      
+      let inner = document.getElementById("prompt_inner")
+      inner.textContent = data['payload']
+      inner.style.visibility = "visible"
+
+      document.getElementById("answer_inner").style.visibility = "hidden";
+      document.getElementById("answer_input").style.visibility = "visible";
+            
       let button = document.getElementById("next_text")
       button.removeChild(button.childNodes[0])
       button.appendChild(document.createTextNode("Next"))
@@ -173,7 +170,7 @@ export var SocketApp = {
         if ("error" in reply){
           alert("That was an invalid vote! If you tried to vote for yourself, you're a nasty one... \n Error: " + reply['error'])
         } else {
-          document.getElementById("answer_box_" + response).style.backgroundColor = "blue"
+          document.getElementById("answer_box_" + response).style.backgroundColor = "#0066FF"
         }
       }
       
@@ -234,6 +231,7 @@ export var SocketApp = {
     //TODO: disable voting after takeVotes() called
     function takeVotes(data) {
       window.state = "awaiting_start"
+      document.getElementById("ethan_select").disabled = false
       
       for (const answer_div in window.answer_boxes) {
         window.answer_boxes[answer_div].onclick = (
@@ -275,7 +273,7 @@ export var SocketApp = {
       ))
       
       document.getElementById("finals").style.visibility = "visible"
-      document.getElementById("next_button").style.backgroundColor = "green"
+      document.getElementById("next_button").style.backgroundColor = "#00FF00"
 
       document.getElementById("next_button").onclick = startRound
     }
@@ -331,15 +329,20 @@ export var SocketApp = {
         alert("Someone disconnected, bringing the number of players down to 2 and cutting off the round.");
         window.state = "awaiting_start";
         
-        document.getElementById("paradigm").style.visibility = "visible"; 
-        document.getElementById("answer_table").style.visibility = "visible"; 
-        document.getElementById("finals").style.visibility = "visible"; 
+        document.getElementById("prompt_input").style.visibility = "hidden"
+        document.getElementById("paradigm").style.visibility = "hidden"
+        document.getElementById("answer_inner").style.visibility = "hidden"
+        document.getElementById("answer_input").style.visibility = "hidden"
+        document.getElementById("answer_table").style.visibility = "hidden" 
+        document.getElementById("finals").style.visibility = "hidden"
+
+        document.getElementById("ethan_select").disabled = false
 
         let button = document.getElementById("next_text")
         button.removeChild(button.childNodes[0])
         button.appendChild(document.createTextNode("Start!"))
         
-        document.getElementById("next_button").style.backgroundColor = "green"
+        document.getElementById("next_button").style.backgroundColor = "#00FF00"
         document.getElementById("next_button").onclick = startRound
       }
     }
@@ -376,57 +379,27 @@ export var SocketApp = {
       window.channel.on("cli_paradigm", takeParadigm) 
       window.channel.on("cli_ethan", takeEthan)
       
-      document.getElementById("next_button").style.backgroundColor = "green"
+      document.getElementById("next_button").style.backgroundColor = "#00FF00"
       document.getElementById("next_button").onclick = startRound; 
       
-      document.getElementById("answer_box").addEventListener("keydown", function(event) {
+      document.getElementById("prompt_input").addEventListener("keydown", function(event) {
         if (event.keyCode === 13) {
           event.preventDefault()
           document.getElementById("next_button").click()
         }
       });
       
-      document.getElementById("prompt_inner").addEventListener("keydown", function(event) {
+      document.getElementById("answer_input").addEventListener("keydown", function(event) {
         if (event.keyCode === 13) {
           event.preventDefault()
           document.getElementById("next_button").click()
         }
       });
-      
-      document.getElementById("answer_box").onblur = (
-        function () {
-          let answer = document.getElementById("answer_box")
-          if (answer.textContent == "") {
-            answer.removeChild(answer.childNodes[0])
-            answer.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))
-          }
-        }
-      )
-      
-      document.getElementById("prompt_inner").onblur = (
-        function () {
-          let prompt = document.getElementById("prompt_inner")
-          if (prompt.textContent == "") {
-            prompt.removeChild(prompt.childNodes[0])
-            prompt.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))
-          }
-        }
-      )
-
-      document.getElementById("paradigm_inner").onblur = (
-        function () {
-          let paradigm = document.getElementById("paradigm_inner")
-          if (paradigm.textContent == "") {
-            paradigm.removeChild(paradigm.childNodes[0])
-            paradigm.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))
-          }
-        }
-      )
       
       window.state = "awaiting_start";
     }
     
-    return [main, startRound, setEthan];
+    main();
   }
 }
 

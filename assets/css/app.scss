@@ -54,7 +54,15 @@ table, th, td {
 }
 
 #prompt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   flex-basis: 20%;
+}
+
+#prompt_inner {
+  border-style: none;
 }
 
 #paradigm {
@@ -62,7 +70,12 @@ table, th, td {
 }
 
 #answer_box {
-  flex-bases: 10%;
+  display: flex;
+  flex-direction: column;
+  flex-basis: 10%;
+  border-style: none;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #answer_table {
@@ -80,6 +93,7 @@ table, th, td {
   flex-basis: 20%;
   border: solid black 1px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 #finals {
@@ -100,6 +114,7 @@ table, th, td {
   width: 100%;
   background-color: #00FF00;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .score-row {

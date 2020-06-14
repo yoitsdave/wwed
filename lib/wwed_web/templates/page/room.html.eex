@@ -17,14 +17,18 @@
   <div id="round">
 
     <div id="prompt">
-       <div id="prompt_inner"> (Example) What's your ideal first date? </div> 
+       <div id="prompt_inner"> (Example) If you asked him his ideal first date? </div> 
+       <input type="text" id="prompt_input" placeholder="Enter your prompt. Press next when ready" style="visibility:hidden" maxlength="140" spellcheck="false" size="25">
      </div>
     
     <div id="paradigm"> 
-      <div id="paradigm_inner"> (Example) What would Ethan say? </div> 
+      <div id="paradigm_inner"> (Example) What would Ethan do? </div> 
     </div>
 
-    <div id="answer_box" style="visibility:hidden"> Type your answer in here. </div>
+    <div id="answer_box">
+      <input type="text" id="answer_input" placeholder="Enter your answer. Press next when ready" style="visibility:hidden" maxlength="140" spellcheck="false" size="25">
+      <div id="answer_inner"> Coffee date! </div>
+    </div>
 
     <div id="answer_table">
       <div class="answer"> Coffee date! </div>
@@ -43,8 +47,5 @@
 <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
 <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
 <script> 
-var main = SocketApp.run()[0]
-var start = SocketApp.run()[1]
-var ethan = SocketApp.run()[2]
-main()
+  SocketApp.run()
 </script>

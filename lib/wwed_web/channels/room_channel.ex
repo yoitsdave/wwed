@@ -125,11 +125,11 @@ defmodule WwedWeb.RoomChannel do
   end
   
   def valid_response(response) do
-    String.match?(response, ~r/^[[:print:]]{1,64}$/)
+    String.match?(response, ~r/^[[:print:]]{1,140}$/)
   end
   
   def is_full(name) do
-    (Wwed.Game.list_users(name) |> length) >= 16
+    (Wwed.Game.list_users(name) |> length) >= 20
   end
   
   # clean votes and responses by converting them to json-able types 

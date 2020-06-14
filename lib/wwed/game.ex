@@ -116,7 +116,7 @@ defmodule Wwed.Game do
   end
   
   def next_paradigm(state) do
-    "What would #{state.ethan} say?"
+    "What would #{state.ethan} do?"
   end
   
   def who_is(state, user) do
@@ -320,7 +320,7 @@ defmodule Wwed.Game do
             case answered_or_voted(user, state.cur_round.responses) do
               true -> {:reply, {:error, :already_responded}, state}
               false ->
-                responses = [{user, answer} | state.cur_round.responses]
+                responses = [{user, answer} | state.cur_round.responses] |> Enum.shuffle()
                 round = %Wwed.Round{state.cur_round | responses: responses}
                 round = case length(responses) == length(state.users) do
                   true -> 
