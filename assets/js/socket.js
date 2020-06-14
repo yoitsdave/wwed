@@ -402,6 +402,37 @@ export var SocketApp = {
         }
       });
       
+      document.getElementById("answer_box").onblur = (
+        function () {
+          let answer = document.getElementById("answer_box")
+          if (answer.textContent == "") {
+            answer.removeChild(answer.childNodes[0])
+            answer.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))
+          }
+        }
+      )
+      
+      document.getElementById("prompt_inner").onblur = (
+        function () {
+          let prompt = document.getElementById("prompt_inner")
+          console.log("hey bitch", prompt.textContent)
+          if (prompt.textContent == "") {
+            prompt.removeChild(prompt.childNodes[0])
+            prompt.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))
+          }
+        }
+      )
+
+      document.getElementById("paradigm_inner").onblur = (
+        function () {
+          let paradigm = document.getElementById("paradigm_inner")
+          if (paradigm.textContent == "") {
+            paradigm.removeChild(paradigm.childNodes[0])
+            paradigm.appendChild(document.createTextNode("I've filled back in so you don't lose me :)"))
+          }
+        }
+      )
+      
       window.state = "awaiting_start";
     }
     
