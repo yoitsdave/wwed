@@ -240,6 +240,7 @@ export var SocketApp = {
       )
     }
     
+    //TODO: disable voting after takeVotes() called
     function takeVotes(data) {
       window.state = "awaiting_start"
       
