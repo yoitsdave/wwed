@@ -24,7 +24,6 @@ export var SocketApp = {
             alert("Unknown error. I did a fucky wucky :()")
         }
       } else {
-        document.getElementById("ethan_select").disabled = true
       }
     }
     
@@ -84,7 +83,9 @@ export var SocketApp = {
     }
     
     function takeSetter(data) {
-      window.state = "awaitng_prompt"
+      window.state = "awaiting_prompt"
+
+      document.getElementById("ethan_select").disabled = true
 
       document.getElementById("paradigm").style.visibility = "hidden"
       document.getElementById("answer_inner").style.visibility = "hidden"
